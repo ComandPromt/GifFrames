@@ -4,14 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <title>Subir archivos al servidor</title>
 <style type="text/css" media="screen">
-body{font-size:1.2em;}
+*{font-size:1em;
+transform: scale(1.1);
+}
+input{
+ width: 200px;
+}
 </style>
 </head>
 <body>
 <div style="text-align:center;margin:auto;">
 <form enctype='multipart/form-data' action='' method='post'>
 <br/>
-<input name='uploadedfile' type='file'><br/><br/>
+<input name='uploadedfile' type='file' id="imagen"><br/><br/>
 <input type='submit' value='Subir archivo'>
 </form>
 </div>
