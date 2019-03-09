@@ -11,8 +11,6 @@ include("funciones.php");
 	
 	$numimagenes=check_images("..\GifFrames","gif");
 	
-	if(count($numimagenes)==1){
-		print $numimagenes[0];
 		if($numimagenes[0]!="picture.gif"){
 			rename($numimagenes[0],"picture.gif");
 		}
@@ -35,19 +33,8 @@ include("funciones.php");
 		}
 		unlink("picture.gif");
 		print '<h1 name="salida">Exito!</h1>';
-	}
 	
-	else{
-		
-		if(count($numimagenes)>1){
-			print '<h1 name="salida">Tienes mas de 1 archivo gif</h1>';
-		}
-		
-		else{
-			print '<h1 name="salida">Error!</h1>';
-		}
-		
-	}
-
+	
+	
 	
 ?>
