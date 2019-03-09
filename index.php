@@ -1,40 +1,85 @@
-<?php
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Subir archivos al servidor</title>
+<style type="text/css" media="screen">
+body{font-size:1.2em;}
+</style>
+</head>
+<body>
+<div style="text-align:center;margin:auto;">
+<form enctype='multipart/form-data' action='' method='post'>
+<br/>
+<input name='uploadedfile' type='file'><br/><br/>
+<input type='submit' value='Subir archivo'>
+</form>
+</div>
+<?php 
+		include('funciones.php');
+comprobar_carpetas();
+$target_path = "uploads/";
+$avatar=$_FILES['uploadedfile']['name'];
+$nombre = substr($avatar, 0, -4);
+	$extension= substr($avatar, -4);
+	if(strlen($nombre)>15){
+		$nombre=substr($avatar, 0, 15);
+		$avatar=$nombre.$extension; 
+	}
+
+$imagen=basename($avatar);
+$longitud=strlen($imagen);
+$target_path .=$imagen;
+
+if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)){
 
 
-
-include("funciones.php");
-
-
-
-
-    include_once ( str_replace('\\','/',dirname(__FILE__) ) ."/GIFDecoder.class.php" );
-	
-	$numimagenes=check_images("..\GifFrames","gif");
-	
-		if($numimagenes[0]!="picture.gif"){
-			rename($numimagenes[0],"picture.gif");
-		}
-				
-		$animation = 'picture.gif';
-		$gifDecoder = new GIFDecoder ( fread ( fopen ( $animation, "rb" ), filesize ( $animation ) ) );
-		$i = 1;
+	if(substr($imagen,$longitud-3,$longitud)!="gif"){
+		unlink($target_path);
+	}
+	else{
+$numero=1;
+		chmod("uploads/", 0777);
+		rename($target_path ,'output/picture.gif');
+		chmod("output/picture.gif", 0777);
+		rmdir('uploads');
+		$numero=sacarframes();
+		if($numero>1){
+			date_default_timezone_set ('Europe/Madrid');
+		$nombre_zip=crear_zip();
 		
-		foreach ( $gifDecoder -> GIFGetFrames ( ) as $frame ) {
-			
-			if ( $i < 10 ) {
-				fwrite ( fopen ( "frame0$i.png" , "wb" ), $frame );
-			}
-			
-			else {
-				fwrite ( fopen ( "frame$i.png" , "wb" ), $frame );
-			}
-			
-			$i++;
+		
+		for($x=1;$x<=$numero;$x++){
+		if($x<10){
+			unlink('output/frames/frame0'.$x.'.png');
 		}
-		unlink("picture.gif");
-		print '<h1 name="salida">Exito!</h1>';
+		else{
+			unlink('output/frames/frame'.$x.'.png');
+		}
+	}
+	unlink("output/picture.gif");
+		
+		
+		}
+		else{
+			if (file_exists("output/frames/frame01.png")) {
+        mkdir("output/frames/frame01.png", 0777, true);
+    }
 	
 	
-	
-	
+			
+	}
+	}
+
+	rmdir('output/frames');
+	rmdir('output');
+	header("Content-disposition: attachment; filename=$nombre_zip");
+	header("Content-type: MIME");
+	readfile($nombre_zip);
+	unlink($nombre_zip);
+}
+
 ?>
+
+</body>
+</html>
