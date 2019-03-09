@@ -17,7 +17,7 @@ input{
 <form enctype='multipart/form-data' action='' method='post'>
 <br/>
 <input name='uploadedfile' type='file' id="imagen"><br/><br/>
-<input type='submit' value='Subir archivo'>
+<input type='submit' name="enviar" value='Subir archivo'>
 </form>
 </div>
 <?php 
